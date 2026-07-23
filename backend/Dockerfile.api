@@ -1,0 +1,21 @@
+# ─────────────────────────────────────────────
+#  MedPlatform API — Dockerfile
+# ─────────────────────────────────────────────
+FROM python:3.11-slim
+
+# System dependencies (needed by psycopg2-binary)
+RUN apt-get update && apt-get install -y \
+    libpq-dev gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /api
+
+# Install Python dependencies first (layer caching)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy app source
+COPY . .
+
+# Run migrations then start server
+CMD ["sh", "-c", "alembic upgrade head && python seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]

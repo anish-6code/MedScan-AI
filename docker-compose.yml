@@ -1,0 +1,40 @@
+services:
+
+  # ── PostgreSQL ─────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: medplatform_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: meddb
+      POSTGRES_USER: meduser
+      POSTGRES_PASSWORD: medpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U meduser -d meddb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── FastAPI app ────────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.api
+    container_name: medplatform_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/api      # hot-reload in dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
