@@ -4,12 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.dependencies import get_current_doctor
 from app.models.user import User
-from app.routers import auth
+from app.routers import auth, patients
 from app.schemas.user import UserRead
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    description="Medical platform API — Module 1: Auth foundation",
+    description="Medical platform API — Module 1: Auth | Module 2: Patients",
     version="0.1.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -26,6 +26,7 @@ app.add_middleware(
 
 # ── Routers ────────────────────────────────────────────────────────────────────
 app.include_router(auth.router)
+app.include_router(patients.router)
 
 
 # ── Core endpoints ─────────────────────────────────────────────────────────────
