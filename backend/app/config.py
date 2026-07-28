@@ -27,6 +27,13 @@ class Settings(BaseSettings):
     AWS_ACCESS_KEY_ID: str = ""
     AWS_SECRET_ACCESS_KEY: str = ""
 
+    # Celery / Redis
+    CELERY_BROKER_URL: str = "redis://redis:6379/0"
+    CELERY_RESULT_BACKEND: str = "redis://redis:6379/0"
+
+    # Preprocessing output (NumPy arrays saved here)
+    PREPROCESSED_DIR: str = "/api/preprocessed"
+
 
 settings = Settings()
 

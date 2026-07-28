@@ -77,6 +77,10 @@ async def upload_scan(
         file_size_bytes=len(file_bytes),
     )
 
+    # 7. Enqueue async preprocessing — returns immediately
+    from app.tasks.tasks_scan import process_scan  # lazy import avoids circular dep
+    process_scan.delay(str(scan_id))
+
     return scan
 
 

@@ -35,3 +35,14 @@ def create_scan(
 
 def get_scan_by_id(db: Session, scan_id: uuid.UUID) -> Scan | None:
     return db.query(Scan).filter(Scan.id == scan_id).first()
+
+
+def update_scan_status(db: Session, scan_id: uuid.UUID, status: str) -> Scan | None:
+    """Update a scan's status field and commit. Returns updated scan or None."""
+    scan = get_scan_by_id(db, scan_id)
+    if scan:
+        scan.status = status
+        db.commit()
+        db.refresh(scan)
+    return scan
+

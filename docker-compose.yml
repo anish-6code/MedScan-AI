@@ -19,6 +19,19 @@ services:
       timeout: 5s
       retries: 10
 
+  # ── Redis (Celery broker + result backend) ─────
+  redis:
+    image: redis:7-alpine
+    container_name: medplatform_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   # ── FastAPI app ────────────────────────────────
   api:
     build:
@@ -31,10 +44,36 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/api      # hot-reload in dev
+      - ./backend:/api          # hot-reload in dev
+      - uploads_data:/api/uploads
+      - preprocessed_data:/api/preprocessed
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Celery worker ──────────────────────────────
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.api
+    container_name: medplatform_worker
+    restart: unless-stopped
+    command: celery -A app.worker worker --loglevel=info --concurrency=2
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/api
+      - uploads_data:/api/uploads
+      - preprocessed_data:/api/preprocessed
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
 volumes:
   postgres_data:
+  uploads_data:
+  preprocessed_data:

@@ -39,7 +39,7 @@ class Scan(Base):
 
     # ── Status ─────────────────────────────────────────────────────────────────
     status: Mapped[str] = mapped_column(
-        Enum("uploaded", "processing", "done", "failed", name="scan_status_enum"),
+        Enum("uploaded", "processing", "preprocessed", "done", "failed", name="scan_status_enum"),
         nullable=False,
         server_default="uploaded",
         default="uploaded",
