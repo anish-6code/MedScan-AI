@@ -9,4 +9,6 @@ class Base(DeclarativeBase):
 # Import all models here so Alembic autogenerate can detect them
 from app.models import user    # noqa: F401, E402
 from app.models import patient  # noqa: F401, E402
+from app.models import scan     # noqa: F401, E402
+
 

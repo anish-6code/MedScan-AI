@@ -17,5 +17,16 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "MedPlatform API"
     API_V1_STR: str = "/api/v1"
 
+    # Storage — set STORAGE_BACKEND=s3 in prod .env
+    STORAGE_BACKEND: str = "local"          # "local" | "s3"
+    UPLOAD_DIR: str = "/api/uploads"        # used when STORAGE_BACKEND=local
+
+    # S3 (only required when STORAGE_BACKEND=s3)
+    S3_BUCKET_NAME: str = ""
+    S3_REGION: str = "ap-south-1"
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+
 
 settings = Settings()
+
