@@ -62,6 +62,11 @@ def process_scan(self: Task, scan_id: str) -> dict:
         # ── 4. Set status → preprocessed ──────────────────────────────────────
         update_scan_status(db, scan.id, "preprocessed")
 
+        # ── 5. Chain → AI inference task ──────────────────────────────────────
+        from app.tasks.tasks_ai import run_ai_inference
+        run_ai_inference.delay(scan_id)
+        logger.info("process_scan: chained run_ai_inference for scan %s", scan_id)
+
         return {
             "scan_id":     scan_id,
             "modality":    result["modality"],
