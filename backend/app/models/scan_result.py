@@ -29,6 +29,7 @@ class ScanResult(Base):
     # File paths
     mask_path:    Mapped[str | None] = mapped_column(String, nullable=True)
     overlay_path: Mapped[str | None] = mapped_column(String, nullable=True)
+    report_path:  Mapped[str | None] = mapped_column(String, nullable=True)
 
     # AI scores
     confidence_score: Mapped[float | None] = mapped_column(Float, nullable=True)
