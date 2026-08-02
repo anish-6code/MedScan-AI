@@ -11,5 +11,6 @@ from app.models import user    # noqa: F401, E402
 from app.models import patient  # noqa: F401, E402
 from app.models import scan     # noqa: F401, E402
 from app.models import scan_result  # noqa: F401, E402
+from app.models import doctor_correction  # noqa: F401, E402
 
 
