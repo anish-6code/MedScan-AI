@@ -77,3 +77,19 @@ volumes:
   postgres_data:
   uploads_data:
   preprocessed_data:
+  reports_data:
+
+  # ── React Dashboard (Vite dev server) ──────────────────────────────
+  frontend:
+    image: node:20-alpine
+    container_name: medscan_frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://api:8000
+    depends_on:
+      - api
