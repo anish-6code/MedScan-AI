@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     # Preprocessing output (NumPy arrays saved here)
     PREPROCESSED_DIR: str = "/api/preprocessed"
 
+    # PDF reports output
+    REPORTS_DIR: str = "/api/reports"
+
 
 settings = Settings()
 
