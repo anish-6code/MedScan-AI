@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.dependencies import get_current_doctor
 from app.models.user import User
-from app.routers import auth, patients, scans, results, reports, corrections, vitals, alerts
+from app.routers import auth, patients, scans, results, reports, corrections, vitals, alerts, ws
 from app.schemas.user import UserRead
 
 app = FastAPI(
@@ -33,6 +33,7 @@ app.include_router(reports.router)
 app.include_router(corrections.router)
 app.include_router(vitals.router)
 app.include_router(alerts.router)
+app.include_router(ws.router)
 
 
 # ── Core endpoints ─────────────────────────────────────────────────────────────
